@@ -1,67 +1,3 @@
-# webpack-koa2-server
-
-![my love](./logo.png)
-
-![NPM](https://img.shields.io/npm/v/webpack-koa2-server.svg)
-[![Build Status](https://travis-ci.org/vagusX/webpack-koa2-server.svg)](https://travis-ci.org/vagusX/webpack-koa2-server)
-[![NPM Downloads](https://img.shields.io/npm/dm/localeval.svg)](https://www.npmjs.com/package/webpack-koa2-server)
-
-
-## A very nice webpack server tool for instead of webpack-dev-server
-
-
-## Install
-```bash
-yarn add webpack-koa2-server
-```
-## Usage
-```javascript
-import { devServer } from 'webpack-koa2-server'
-//default options
- const options = {
-    //port will random for 7000~8000
-    port: Math.floor(Math.random() * 1001) + 7000,
-    //自动打开浏览器
-    autoOpenBrowser: true,
-    //webpack config
-    webpackConfig: null,
-    //devMiddleware
-    devConfig: null,
-    //hotMiddleware
-    hotConfig: null,
-    //webpack-koa2-server
-    proxy: null,
-    //静态资源目录
-    staticPath: pathTool.join(process.cwd(), 'static'),
-    //koa-static-cache options
-    staticOptions: null,
-    ..._options
-  }
-devServer.init(_options)
-
-```
-
-## Source Code
-### src/index.ts
-```typescript
-export * from './dev-server'
-```
-### src/dev-client.ts
-```typescript
-// this is use in browser, require it in your webpackConfig.entry
-import 'eventsource-polyfill'
-const hotClient = require('webpack-hot-middleware/client?noInfo=true&reload=true')
-//in browser ,linsten webpack-hot-middleware for force reload
-hotClient.subscribe(function (event) {
-  if (event.action === 'reload') {
-    window.location.reload()
-  }
-})
-
-```
-### src/index.ts
-```typescript
-// execute this file or import object with node cli
 import * as  opn from 'opn'
 import * as  color from 'cli-color'
 import * as  pathTool from 'path'
@@ -69,7 +5,7 @@ import * as  koa from 'koa'
 import * as  staticCache from 'koa-static-cache'
 import { devMiddleware, hotMiddleware } from 'koa2-webpack-middleware-plus'
 import * as webpack from 'webpack'
-import { httpProxy } from 'webpack-koa2-server'
+import { httpProxy } from 'koa-http-proxy-middleware'
 import { EventHelper } from 'event-helper'
 
 export const devServer = (_options) => {
@@ -84,7 +20,7 @@ export const devServer = (_options) => {
     devConfig: null,
     //hotMiddleware
     hotConfig: null,
-    //webpack-koa2-server
+    //koa-http-proxy-middleware
     proxy: null,
     //静态资源目录
     staticPath: pathTool.join(process.cwd(), 'static'),
@@ -195,7 +131,3 @@ export const devServer = (_options) => {
     }
   }
 }
-
-
-```
-

@@ -40,12 +40,12 @@
     },
     "keywords": [
         "typescript",
-        "webpack-koa2-server"
+        "webpack-koa2-server",
+        "webpack-koa",
+        "webpack-koa-server"
     ],
     "author": "hubiqing",
-    "repository": "https://github.com/githbq/hbq-module-boilerplate.git",
-    "engines": {
-        "node": ">=7.6"
-    },
+    "repository": "https://github.com/githbq/hbq-webpack-koa2-server.git",
+    "engines": {"node": ">=7.6"},
     "license": "MIT"
 }
