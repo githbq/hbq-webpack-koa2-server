@@ -17,9 +17,16 @@ export const devServer = (_options) => {
     //webpack config
     webpackConfig: null,
     //devMiddleware
-    devConfig: null,
+    devConfig: {
+      publicPath: null, //webpackConfig.output.publicPath,
+      quiet: true
+    },
     //hotMiddleware
-    hotConfig: null,
+    hotConfig: {
+      log: false,
+      heartbeat: 2000,
+      reload: true
+    },
     //koa-http-proxy-middleware
     proxy: null,
     //静态资源目录
@@ -65,7 +72,7 @@ export const devServer = (_options) => {
     //第二步 初始化中间件
     initMiddleware() {
       this._devMiddleware = devMiddleware(this.compiler, {
-        publicPath: this.webpackConfig.output.publicPath,
+        publicPath: options.webpackConfig.output.publicPath,
         quiet: true,
         ...options.devConfig
       })

@@ -40,8 +40,19 @@ import { devServer } from 'webpack-koa2-server'
 devServer.init(_options)
 
 ```
+### Userage in webpack.config
+```
+//webpack.entry
+// on dev mode
+{
+ index:['./src/index','webpack-koa2-server/build/dev-client']
+}
+```
+
 
 ## Source Code
+`./src/**/*.ts` will build into `./build/**/*.js`
+
 ### src/index.ts
 ```typescript
 export * from './dev-server'
@@ -59,9 +70,9 @@ hotClient.subscribe(function (event) {
 })
 
 ```
-### src/index.ts
+### src/dev-server.ts -> build/dev-server.js as package.main
 ```typescript
-// execute this file or import object with node cli
+// execute this file or import object with node
 import * as  opn from 'opn'
 import * as  color from 'cli-color'
 import * as  pathTool from 'path'
@@ -69,7 +80,7 @@ import * as  koa from 'koa'
 import * as  staticCache from 'koa-static-cache'
 import { devMiddleware, hotMiddleware } from 'koa2-webpack-middleware-plus'
 import * as webpack from 'webpack'
-import { httpProxy } from 'webpack-koa2-server'
+import { httpProxy } from 'koa-http-proxy-middleware'
 import { EventHelper } from 'event-helper'
 
 export const devServer = (_options) => {
@@ -81,10 +92,17 @@ export const devServer = (_options) => {
     //webpack config
     webpackConfig: null,
     //devMiddleware
-    devConfig: null,
+    devConfig: {
+      publicPath: null, //webpackConfig.output.publicPath,
+      quiet: true
+    },
     //hotMiddleware
-    hotConfig: null,
-    //webpack-koa2-server
+    hotConfig: {
+      log: false,
+      heartbeat: 2000,
+      reload: true
+    },
+    //koa-http-proxy-middleware
     proxy: null,
     //静态资源目录
     staticPath: pathTool.join(process.cwd(), 'static'),
@@ -129,7 +147,7 @@ export const devServer = (_options) => {
     //第二步 初始化中间件
     initMiddleware() {
       this._devMiddleware = devMiddleware(this.compiler, {
-        publicPath: this.webpackConfig.output.publicPath,
+        publicPath: options.webpackConfig.output.publicPath,
         quiet: true,
         ...options.devConfig
       })
@@ -195,6 +213,7 @@ export const devServer = (_options) => {
     }
   }
 }
+
 
 
 ```

@@ -1,6 +1,6 @@
 {
     "name": "webpack-koa2-server",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "webpack-koa2-server",
     "main": "build/index.js",
     "scripts": {
